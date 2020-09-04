@@ -36,23 +36,25 @@
 				</tr>
 			</table>
 			<% @book.book_comments.each do |book_comment| %>
-			  <li class="comment">
+			  <table class="comment">
 			    <div class="comment-body bb">
-			      <div class="comment-avatar">
+			      <td class="comment-avatar">
 			        <div class="avatar">
 			          <%= attachment_image_tag(@book.user, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %>
 			        </div>
-			      </div>
-			      <div class="comment-text">
+			      </td>
+			      <td class="comment-text">
 			        <div class="comment-author clearfix">
 			          <a href="#" class="link-author"><%= book_comment.user.name %></a>
 			        </div>
-			        <div class="comment-entry"><%= book_comment.comment %></div>
-			        <% if book_comment.user_id == current_user.id %>
-			        	<%= link_to "Destroy", book_book_comments_path(book_comment.book, book_comment), method: :delete, class: "btn btn-danger pull-right" %>
-			        <% end %>
-			    </div>
-			  </li>
+			    	</td>
+			    	<td>
+			    		<div class="comment-entry"><%= book_comment.comment %></div>
+			    	</td>
+			      <% if user_signed_in? && book_comment.user_id == current_user.id %>
+			      	<%= link_to "Destroy", book_book_comments_path(book_comment.book, book_comment), method: :delete, class: "btn btn-danger pull-right" %>
+			      <% end %>
+			  </table>
 			<% end %>
 			<!-- コメント機能 投稿フォーム -->
 			<%= form_for [@book, @book_comment] do |f| %>

@@ -26,11 +26,43 @@
 					<% if @book.user == current_user %>
 						<td><%= link_to "Edit", edit_book_path(@book), class: "btn-sm btn-success edit_book_#{@book.id}" %></td>
 						<td><%= link_to "Destroy", book_path(@book), method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "btn-sm btn-danger destroy_book_#{@book.id}" %></td>
-						<td><%= render 'books/like', book: @book %></td>
+						<td><!-- いいね機能 -->
+							<%= render 'books/like', book: @book %>
+						</td>
+						<td><!-- コメント機能 件数表示 -->
+							<%= @book.book_comments.count %>件コメント
+						</td>
 					<% end %>
 				</tr>
 			</table>
-
+			<% @book.book_comments.each do |book_comment| %>
+			  <li class="comment">
+			    <div class="comment-body bb">
+			      <div class="comment-avatar">
+			        <div class="avatar">
+			          <%= attachment_image_tag(@book.user, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %>
+			        </div>
+			      </div>
+			      <div class="comment-text">
+			        <div class="comment-author clearfix">
+			          <a href="#" class="link-author"><%= book_comment.user.name %></a>
+			        </div>
+			        <div class="comment-entry"><%= book_comment.comment %></div>
+			        <% if book_comment.user_id == current_user.id %>
+			        	<%= link_to "Destroy", book_book_comments_path(book_comment.book, book_comment), method: :delete, class: "btn btn-danger pull-right" %>
+			        <% end %>
+			    </div>
+			  </li>
+			<% end %>
+			<!-- コメント機能 投稿フォーム -->
+			<%= form_for [@book, @book_comment] do |f| %>
+			  <div class="row">
+			    <div class="col-sm-12">
+			      <%= f.text_area :comment, rows:'3', class: "form-control" %>
+			    </div>
+			  </div>
+			  <%= f.submit "Send", class: "btn btn-base-1 mt-20 pull-right" %>
+			<% end %>
 	</div>
 </div>
 

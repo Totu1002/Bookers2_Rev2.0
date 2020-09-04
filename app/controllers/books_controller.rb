@@ -4,6 +4,8 @@ class BooksController < ApplicationController
   def show
     @user = User.find(current_user.id)
     @book = Book.find(params[:id])
+    #Book_commentの記述だとエラー発生
+    @book_comment = BookComment.new
   end
 
   def index

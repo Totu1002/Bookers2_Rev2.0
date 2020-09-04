@@ -34,7 +34,10 @@
 					<td><%= book.body %></td>
 					<td><!-- いいね機能実装 -->
 						<%= render 'books/like', book: book %>
-					</td><!-- /いいね機能実装 -->
+					</td>
+					<td><!-- コメント機能 件数表示 -->
+						<%= book.book_comments.count %>件コメント
+					</td>
 				</tr>
 				<% end %>
 			</tbody>
